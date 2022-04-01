@@ -32,11 +32,21 @@ public class MainController {
             Scanner scanner = new Scanner(System.in);
             final int select = scanner.nextInt();
             switch (CATEGORY.values()[select]) {
-                case SIGNUP -> loginController.processSignUp();
-                case SIGNIN -> loginController.processSignIn();
-                case LIST -> loginController.showAccountList();
-                case EXIT -> System.exit(0);
-                default -> throw new IllegalStateException("Unexpected value: " + CATEGORY.values()[select]);
+                case SIGNUP: loginController.processSignUp(); break;
+                case SIGNIN:
+                {
+                    StringBuilder id = new StringBuilder();
+                    StringBuilder pw = new StringBuilder();
+                    if ( loginController.processSignIn(id, pw) )
+                    {
+                        emailController.setAccount(id.toString());
+                        emailController.run(loginController.getAllId());
+                    }
+                }
+                break;
+                case LIST: loginController.showAccountList(); break;
+                case EXIT: System.exit(0);
+                default: throw new IllegalStateException("Unexpected value: " + CATEGORY.values()[select]);
             }
         }
     }
