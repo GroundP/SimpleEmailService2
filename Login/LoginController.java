@@ -1,12 +1,15 @@
 package Login;
 
-import java.util.HashMap;
-import java.util.Set;
-import java.util.Map;
-import java.util.Scanner;
+import File.FileHandler;
+
+import java.util.*;
 
 public class LoginController {
     HashMap<String, String> accountsMap = new HashMap<>();
+
+    public LoginController() {
+        FileHandler.readAccounts(accountsMap);
+    }
 
     public boolean processSignUp() {
         System.out.println("<< SIGN UP >>");
@@ -14,6 +17,7 @@ public class LoginController {
         StringBuilder pw = new StringBuilder();
         if ( inputAuthInfo(id, pw) ) {
             accountsMap.put(id.toString(), pw.toString());
+            FileHandler.saveAccounts(accountsMap);
             return true;
         }
         else {
